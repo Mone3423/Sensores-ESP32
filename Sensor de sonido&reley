@@ -1,0 +1,41 @@
+//Sensor de sonido y reley v5
+const byte relePin = 23;
+const byte ledPin = 22;   
+const byte sonidoPin = 4;
+
+bool lecturaModulo;
+bool estado;
+
+void setup() {
+  Serial.begin(115200); 
+
+  pinMode(relePin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(sonidoPin, INPUT);  
+
+  estado = false; // inicia apagando todo
+}
+
+void loop() {
+  lecturaModulo = digitalRead(sonidoPin);
+  if (!lecturaModulo) {
+    Serial.println("Se detectó sonido");
+    estado = !estado;
+    if (estado) {
+      encenderPerifericos();
+    } else {
+      apagarPerifericos();
+    }
+    delay(200);  
+  }
+}
+
+void encenderPerifericos() {
+  digitalWrite(relePin, LOW);
+  digitalWrite(ledPin, HIGH);
+}
+
+void apagarPerifericos() {
+  digitalWrite(ledPin, LOW);
+  digitalWrite(relePin, HIGH);
+}
